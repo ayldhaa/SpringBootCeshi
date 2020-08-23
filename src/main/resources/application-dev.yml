@@ -1,0 +1,26 @@
+server:
+  port: 8080
+spring:
+  datasource:
+    driver-class-name: oracle.jdbc.driver.OracleDriver
+    username: ayldh
+    password: 123
+    url: jdbc:oracle:thin:@localhost:1521:orcl
+mybatis:
+  mapper-locations: classpath:mapping/*Mapper.xml
+  type-aliases-package: com.aaa.entity
+
+  logging:
+    level:
+      com:
+        aaa:
+          mapper: debug
+
+
+pagehelper:
+  helper-dialect: oracle
+  reasonable: true
+  support-methods-arguments: true
+  params: count=countSql
+
+

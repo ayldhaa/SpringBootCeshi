@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <script type="text/javascript" src="/js/jquery-3.1.1.js"></script>
+    <script type="text/javascript">
+
+       function Test() {
+           var arr = [];
+           $("[name=testDel]:checked").each(function () {
+               arr.push(this.value);
+           })
+           $.ajax({
+               url:"/Test",
+               data:{"testname":arr.toString()},
+               type:"post",
+               success:function (data) {
+                   alert("OK");
+               },error:function () {
+                   alert("NO");
+               }
+           })
+       }
+
+    </script>
+
+</head>
+<style type="text/css">
+
+    #test
+    {
+        border: 1px solid;
+        width: 500px;
+        height: 500px;
+        margin: 0 auto;
+        margin-top: -280px;
+    }
+
+</style>
+
+<body>
+
+<tr th:each="te:${PageList.getList()}">
+    <td th:text="${te.eid}"></td><br>
+    <td th:text="${te.ename}"></td><br>
+    <td th:text="${#dates.format(te.edate,'yyyy-MM-dd')}"></td><br>
+    <td th:text="${te.emoney}"></td><br>
+    <td th:text="${te.depts.dname}"></td><br>
+    <td><input type="checkbox" name="testDel" th:value="${te.eid}"> 删除</td><br>
+    <td><a th:href="@{/showId/}+${te.eid}">修改</a></td>
+    <span>---------------------------</span><br>
+</tr>
+<button onclick="Test()">批量删除</button><br>
+
+<span><a th:href="@{/showPage/}+1">首页</a></span>
+<span><a th:href="@{/showPage/}+${PageList.getPages()}">尾页</a></span>
+<span><a th:href="@{/showPage/}+${PageList.pageNum-1}">上一页</a></span>
+<span><a th:href="@{/showPage/}+${PageList.pageNum+1}">下一页</a></span>
+
+
+
+<div id="test">
+
+    <form action="/Add" method="post">
+    编号:<input type="text" name="eid"><br>
+    姓名:<input type="text" name="ename"><br>
+    日期:<input type="text" name="edate"><br>
+    工资:<input type="text" name="emoney"><br>
+    部门:<select name="did">
+           <option th:each="depts:${DeptsList}" th:text="${depts.dname}" th:value="${depts.did}"></option>
+         </select><br>
+    <input type="submit" value="提交">
+    </form>
+</div>
+
+
+
+</body>
+</html>

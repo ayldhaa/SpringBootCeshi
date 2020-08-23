@@ -1,0 +1,41 @@
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+
+<mapper namespace="com.aaa.dao.EmpsDao">
+    <resultMap id="EmpsMap" type="com.aaa.entity.Emps">
+        <result property="eid" column="eid"></result> s
+        <result property="ename" column="ename"></result>
+        <result property="edate" column="edate"></result>
+        <result property="emoney" column="emoney"></result>
+        <result property="did" column="did"></result>
+        <association property="depts" javaType="com.aaa.entity.Depts">
+            <id property="did" column="did"></id>
+            <result property="dname" column="dname"></result>
+        </association>
+    </resultMap>
+
+    <select id="show" parameterType="com.aaa.entity.Emps" resultMap="EmpsMap">
+         select * from emps left join depts on depts.did =emps.did
+    </select>
+
+    <insert id="Add" parameterType="com.aaa.entity.Emps">
+        insert into emps(eid,ename,edate,emoney,did)values(#{eid},#{ename},#{edate},#{emoney},#{did})
+    </insert>
+
+    <delete id="Del">
+        delete from emps where eid in
+       <foreach collection="array" item="eid" separator="," open="(" close=" )">
+         #{eid}
+       </foreach>
+    </delete>
+
+    <update id="Up">
+        update emps set ename=#{ename} where eid=#{eid}
+    </update>
+
+    <select id="showId" resultMap="EmpsMap">
+        select * from emps where eid=#{eid}
+    </select>
+
+</mapper>
